@@ -15,6 +15,7 @@ class SentMemesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = view.frame.height/6
         
         let object = UIApplication.sharedApplication().delegate
         appDelegate = object as! AppDelegate
@@ -55,7 +56,6 @@ class SentMemesTableViewController: UITableViewController {
 
         return cell
     }
-    
 
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

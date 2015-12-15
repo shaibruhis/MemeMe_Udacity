@@ -185,9 +185,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         activityController.completionWithItemsHandler = { activty, success, items, error in
             if success {
                 self.save()
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
             activityController.dismissViewControllerAnimated(true, completion: nil)
-            self.dismissViewControllerAnimated(true, completion: nil)
         }
         presentViewController(activityController, animated: true, completion: nil)
         
