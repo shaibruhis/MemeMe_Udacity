@@ -35,16 +35,6 @@ class SentMemesCollectionViewController: UICollectionViewController {
         collectionView?.reloadData()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "segueToMemeDetailView") {
-            let meme = appDelegate.memes[(collectionView!.indexPathForCell(sender as! UICollectionViewCell)!.row)]
-            
-            let memeDetailVC = segue.destinationViewController as! MemeDetailViewController
-            memeDetailVC.meme = meme
-            
-            memeDetailVC.hidesBottomBarWhenPushed = true;
-        }
-    }
     
     // MARK: UICollectionViewDataSource
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -58,5 +48,17 @@ class SentMemesCollectionViewController: UICollectionViewController {
         cell.memeImageView.image = meme.memedImage!
         
         return cell
+    }
+
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "segueToMemeDetailView") {
+            let meme = appDelegate.memes[(collectionView!.indexPathForCell(sender as! UICollectionViewCell)!.row)]
+            
+            let memeDetailVC = segue.destinationViewController as! MemeDetailViewController
+            memeDetailVC.meme = meme
+            
+            memeDetailVC.hidesBottomBarWhenPushed = true;
+        }
     }
 }

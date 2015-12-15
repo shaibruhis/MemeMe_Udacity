@@ -15,7 +15,6 @@ class SentMemesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = editButtonItem()
         
         let object = UIApplication.sharedApplication().delegate
         appDelegate = object as! AppDelegate
@@ -36,7 +35,14 @@ class SentMemesTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appDelegate.memes.count
+        let num = appDelegate.memes.count
+        if (num == 0) {
+                navigationItem.leftBarButtonItem = nil
+        }
+        else {
+            navigationItem.leftBarButtonItem = editButtonItem()
+        }
+        return num
     }
 
     

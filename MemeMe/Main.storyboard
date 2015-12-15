@@ -264,7 +264,7 @@
                                 <animations/>
                                 <connections>
                                     <outlet property="memeImageView" destination="8eD-g1-GKV" id="TYr-Xu-BBw"/>
-                                    <segue destination="Z58-q8-dd7" kind="show" id="g8C-7Q-Glg"/>
+                                    <segue destination="Z58-q8-dd7" kind="show" identifier="segueToMemeDetailView" id="g8C-7Q-Glg"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

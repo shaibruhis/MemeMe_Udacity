@@ -64,7 +64,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
         if (meme != nil) {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareButtonWillEnable:", name: UITextFieldTextDidChangeNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareButtonWillEnable", name: UITextFieldTextDidChangeNotification, object: nil)
         }
     }
     
@@ -158,6 +158,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
+        self.meme = meme
         
     }
     
@@ -187,7 +188,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
             }
             activityController.dismissViewControllerAnimated(true, completion: nil)
             self.dismissViewControllerAnimated(true, completion: nil)
-
         }
         presentViewController(activityController, animated: true, completion: nil)
         
