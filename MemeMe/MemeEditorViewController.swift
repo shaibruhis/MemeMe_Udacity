@@ -10,6 +10,7 @@ import UIKit
 
 class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var meme:Meme? = nil
     
     @IBOutlet weak var topBar: UINavigationBar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
@@ -46,6 +47,12 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         bottomTextField.textAlignment = .Center
         
         subscribeToKeyboardNotifications()
+        
+        if (meme != nil) {
+            topTextField.text = meme!.topString
+            bottomTextField.text = meme!.botString
+            pickedImage.image = meme!.originalImage
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -56,6 +63,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     func subscribeToKeyboardNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        if (meme != nil) {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareButtonWillEnable:", name: UITextFieldTextDidChangeNotification, object: nil)
+        }
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -77,6 +87,13 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     func unsubscribeFromKeyboardNotifications() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        if (meme != nil) {
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextFieldTextDidChangeNotification, object: nil)
+        }
+    }
+    
+    func shareButtonWillEnable() {
+        shareButton.enabled = true
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -90,13 +107,20 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
     }
     
+//    func textFieldDidEndEditing(textField: UITextField) {
+//        if (meme != nil) {
+//            shareButton.enabled = true
+//        }
+//    }
+    
     @IBAction func reset(sender: UIBarButtonItem) {
         pickedImage.image = nil
         shareButton.enabled = false
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
-        let rootVC = storyboard?.instantiateViewControllerWithIdentifier("rootVC") as! UITabBarController
-        presentViewController(rootVC, animated: true, completion: nil)
+//        let rootVC = storyboard?.instantiateViewControllerWithIdentifier("rootVC") as! UITabBarController
+        dismissViewControllerAnimated(true, completion: nil)
+//        presentViewController(rootVC, animated: true, completion: nil)
     }
     
     @IBAction func pickImageFromAlbum(sender: UIBarButtonItem) {
@@ -162,8 +186,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
                 self.save()
             }
             activityController.dismissViewControllerAnimated(true, completion: nil)
-            let rootVC = self.storyboard?.instantiateViewControllerWithIdentifier("rootVC") as! UITabBarController
-            self.presentViewController(rootVC, animated: true, completion: nil)
+            self.dismissViewControllerAnimated(true, completion: nil)
+
         }
         presentViewController(activityController, animated: true, completion: nil)
         

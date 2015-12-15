@@ -19,9 +19,6 @@ class SentMemesCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Register cell classes
-//        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
         // Do any additional setup after loading the view.
         let object = UIApplication.sharedApplication().delegate
         appDelegate = object as! AppDelegate
@@ -32,39 +29,23 @@ class SentMemesCollectionViewController: UICollectionViewController {
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSizeMake(dimension, dimension)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if (segue.identifier == "segueToMemeDetail") {
-//            let indexPath = sender!.indexPathForSelectedRow!!
-//            let meme = appDelegate.memes[indexPath.row]
-//            
-//            let memeDetailVC = segue.destinationViewController as! MemeDetailViewController
-//            memeDetailVC.memeImageView.image = meme.memedImage!
-//            
-//            // Pass the selected object to the new view controller.
-//            presentViewController(memeDetailVC, animated: true, completion: nil)
-//        }
-//    }
-
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let meme = appDelegate.memes[indexPath.row]
-        
-        let memeDetailVC = storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
-        memeDetailVC.memedImage = meme.memedImage!
-        
-        // Pass the selected object to the new view controller.
-        presentViewController(memeDetailVC, animated: true, completion: nil)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        collectionView?.reloadData()
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "segueToMemeDetailView") {
+            let meme = appDelegate.memes[(collectionView!.indexPathForCell(sender as! UICollectionViewCell)!.row)]
+            
+            let memeDetailVC = segue.destinationViewController as! MemeDetailViewController
+            memeDetailVC.meme = meme
+            
+            memeDetailVC.hidesBottomBarWhenPushed = true;
+        }
+    }
+    
     // MARK: UICollectionViewDataSource
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return appDelegate.memes.count

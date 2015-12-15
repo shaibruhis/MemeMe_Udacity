@@ -301,6 +301,7 @@
 				B302C66F1C1C22720019920A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

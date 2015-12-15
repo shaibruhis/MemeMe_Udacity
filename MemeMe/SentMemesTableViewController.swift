@@ -15,8 +15,23 @@ class SentMemesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.leftBarButtonItem = editButtonItem()
+        
         let object = UIApplication.sharedApplication().delegate
         appDelegate = object as! AppDelegate
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableReload()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    func tableReload() {
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -36,23 +51,28 @@ class SentMemesTableViewController: UITableViewController {
     }
     
 
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+            appDelegate.memes.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
-    */
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let meme = appDelegate.memes[indexPath.row]
-        
-        let memeDetailVC = storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
-        memeDetailVC.memedImage = meme.memedImage!
-        
-        // Pass the selected object to the new view controller.
-        presentViewController(memeDetailVC, animated: true, completion: nil)
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "segueToMemeDetailView") {
+            let meme = appDelegate.memes[tableView.indexPathForCell(sender as! UITableViewCell)!.row]
+            
+            let memeDetailVC = segue.destinationViewController as! MemeDetailViewController
+            memeDetailVC.meme = meme
+            
+            memeDetailVC.hidesBottomBarWhenPushed = true;
+        }
     }
 }
